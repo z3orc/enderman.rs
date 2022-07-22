@@ -31,13 +31,13 @@ struct VersionPaper{
 
 #[derive(Deserialize, Debug)]
 struct BuildPaper{
-    downloads: BuildPaperDownloads
+    downloads: HashMap<String, HashMap<String,String>>
 }
 
-#[derive(Deserialize, Debug)]
-struct BuildPaperDownloads{
-    application: HashMap<String, String>,
-}
+// #[derive(Deserialize, Debug)]
+// struct BuildPaperDownloads{
+//     application: HashMap<String, String>,
+// }
 
 fn main() {
     let mut arguments = std::env::args().skip(1);
@@ -87,7 +87,7 @@ fn find_paper_download(id: &str){
 
             let json: BuildPaper = serde_json::from_str(&response_text).expect("Could not parse json");
 
-            let file = &json.downloads.application["name"];
+            let file = &json.downloads["application"]["name"];
             let url = format!("https://api.papermc.io/v2/projects/paper/versions/{}/builds/{}/downloads/{}", id, build, file);
 
             println!("{:?}", url);
